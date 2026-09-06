@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f9f8fb"/>
+  <path d="M0 1h1200M0 629h1200" stroke="#e6e2ea"/>
+  <circle cx="1050" cy="80" r="330" fill="#7d4fd0" opacity=".06"/>
+  <g transform="translate(90 82) scale(.44)" fill="none" stroke="#7d4fd0" stroke-width="20" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="61.44" cy="61.44" r="18.424"/><circle cx="61.44" cy="184.32" r="18.424"/><circle cx="184.32" cy="61.44" r="18.424"/><circle cx="184.32" cy="184.32" r="18.424"/>
+    <path d="M78.24 167.52 169.92 75.84M142.08 142.08l27.84 27.84M78.24 78.24l25.44 25.44M61.44 79.864v78.956M184.32 80.64v84.48"/>
+  </g>
+  <text x="220" y="165" fill="#211d27" font-family="system-ui,sans-serif" font-size="42" font-weight="700">Middlewarr</text>
+  <text x="90" y="330" fill="#211d27" font-family="system-ui,sans-serif" font-size="72" font-weight="700">One stable interface.</text>
+  <text x="90" y="414" fill="#7d4fd0" font-family="system-ui,sans-serif" font-size="72" font-weight="700">Every service behind it.</text>
+  <text x="90" y="510" fill="#6d6672" font-family="system-ui,sans-serif" font-size="28">A lightweight proxy for your *arr stack.</text>
+  <text x="1110" y="556" fill="#7d4fd0" text-anchor="end" font-family="ui-monospace,monospace" font-size="20">middlewarr.github.io</text>
+</svg>

@@ -1,0 +1,235 @@
+---
+import BrandMark from "./BrandMark.astro";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  X,
+  KeyRound,
+  ListChecks,
+  Send,
+  ShieldCheck,
+} from "@lucide/astro";
+const requests = [
+  {
+    time: "09:41:02",
+    client: "Homepage",
+    method: "GET",
+    path: "/api/v3/calendar?start=2026-09-01",
+  },
+  {
+    time: "09:41:04",
+    client: "Seerr",
+    method: "POST",
+    path: "/api/v3/command",
+  },
+  {
+    time: "09:41:07",
+    client: "Bazarr",
+    method: "GET",
+    path: "/api/v3/episode/1842",
+  },
+  {
+    time: "09:41:09",
+    client: "Profilarr",
+    method: "PUT",
+    path: "/api/v3/qualityprofile/7",
+  },
+  {
+    time: "09:41:12",
+    client: "qui",
+    method: "GET",
+    path: "/api/v3/parse?title=Arrival.2016",
+  },
+  { time: "09:41:15", client: "Script", method: "DELETE", path: "/api/v3/movie/42" },
+  { time: "09:41:18", client: "Homepage", method: "GET", path: "/api/v3/health" },
+];
+const steps = [
+  { title: "Authenticate", detail: "Proxy key accepted", icon: KeyRound },
+  {
+    title: "Match Endpoint",
+    detail: "Check method + path",
+    icon: ListChecks,
+  },
+  {
+    title: "Attach Service Key",
+    detail: "Add the service credential",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Forward & Log",
+    detail: "Record request and response",
+    icon: Send,
+  },
+];
+const packets = [0, 1];
+const services = [
+  { name: "Radarr", detail: "Movies", icon: "/icons/services/radarr.svg" },
+  { name: "Sonarr", detail: "Series", icon: "/icons/services/sonarr.svg" },
+];
+
+---
+
+<figure
+  class="request-journey"
+  data-request-journey
+  aria-label="Requests travel from a client app through Middlewarr to an upstream service, and responses return through Middlewarr to the client app"
+>
+  <div class="journey-source">
+    <span class="journey-label">Example Client Requests</span>
+    <div class="request-feed" data-request-feed>
+      {
+        requests.map(({ time, client, method, path }, index) => (
+          <div class="request-row" style={`--request: ${index}`}>
+            <>
+              <time datetime={time}>{time}</time>
+              <strong translate="no">{client}</strong>
+              <code translate="no" aria-label={`${method} ${path}`}>
+                <b>{method}</b> {path}
+              </code>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div
+    class="journey-connector"
+    data-journey-connector="client"
+    style="--route: 0"
+    aria-hidden="true"
+  >
+    <span class="journey-direction journey-direction-request"
+      ><span class="flow-track"
+        ><span class="flow-packets">{packets.map((packet) => (<i class="flow-dot" style={`--packet: ${packet}`} />))}</span><ArrowRight data-lucide="arrow-right" /></span
+      ></span
+    >
+    <span class="journey-direction journey-direction-response"
+      ><span class="flow-track"
+        ><span class="flow-packets">{packets.map((packet) => (<i class="flow-dot" style={`--packet: ${packet}`} />))}</span><ArrowLeft data-lucide="arrow-left" /></span
+      ></span
+    >
+  </div>
+  <div class="journey-center">
+    <header>
+      <span class="journey-brand"><BrandMark class="brand-mark" /></span><div>
+        <strong>Middlewarr</strong><small>Request policy</small>
+      </div>
+    </header>
+    <ol>
+      {
+        steps.map(({ title, detail, icon: Icon }, index) => (
+          <li class="journey-step" style={`--step: ${index}`}>
+            <>
+              <span class="step-icon">
+                <Icon aria-hidden="true" />
+              </span>
+              <div>
+                <>
+                  <strong>{title}</strong>
+                  <small>{detail}</small>
+                </>
+              </div>
+              <span class="step-status" aria-hidden="true"><Check class="step-check" />{index === 1 && <X class="step-reject" />}</span>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="journey-results">
+      <div class="journey-result result-allowed">
+        <span><Check aria-hidden="true" /> Request allowed</span><code>200</code>
+      </div>
+      <div class="journey-result result-rejected">
+        <span><X aria-hidden="true" /> Endpoint blocked</span><code>403</code>
+      </div>
+    </div>
+  </div>
+  <div class="journey-target-stack">
+    {
+      services.map(({ name, detail, icon }, index) => (
+        <div class="upstream-route" style={`--route: ${index}`}>
+          <div
+            class="journey-connector"
+            data-service-route={name}
+            aria-hidden="true"
+          >
+            <span class="journey-direction journey-direction-request">
+              <span class="flow-track"><span class="flow-packets">{packets.map((packet) => (<i class="flow-dot" style={`--packet: ${packet}`} />))}</span>
+
+                <ArrowRight data-lucide="arrow-right" />
+              </span>
+            </span>
+            <span class="journey-direction journey-direction-response">
+              <span class="flow-track"><span class="flow-packets">{packets.map((packet) => (<i class="flow-dot" style={`--packet: ${packet}`} />))}</span>
+
+                <ArrowLeft data-lucide="arrow-left" />
+              </span>
+            </span>
+          </div>
+          <div
+            class="journey-target upstream-service"
+            data-upstream-service={name}
+          >
+            <div class="destination-service">
+              <img src={icon} alt="" width="32" height="32" loading="lazy" />
+              <span>
+                <>
+                  <strong>{name}</strong>
+                  <small>{detail}</small>
+                </>
+              </span>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+    <div class="notification-route">
+      <div class="journey-connector" data-notification-route aria-hidden="true">
+        <span class="journey-direction journey-direction-request"
+          ><span class="flow-track"
+            ><span class="flow-packets">{packets.map((packet) => (<i class="flow-dot" style={`--packet: ${packet}`} />))}</span><ArrowRight data-lucide="arrow-right" /></span
+          ></span
+        >
+      </div>
+      <div class="notification-panel" data-notification-panel>
+        <header>
+          <span
+            ><strong>Notification Providers</strong><small
+              >Send alerts when access or upstream health needs attention.</small
+            ></span
+          >
+        </header>
+        <div class="provider-list" aria-label="Example notification providers">
+          <span
+            ><img
+              src="/icons/notifications/telegram.svg"
+              alt=""
+              width="16"
+              height="16"
+              loading="lazy"
+            />Telegram</span
+          >
+          <span
+            ><img
+              src="/icons/notifications/gotify.svg"
+              alt=""
+              width="16"
+              height="16"
+              loading="lazy"
+            />Gotify</span
+          >
+          <span
+            ><img
+              src="/icons/notifications/discord.svg"
+              alt=""
+              width="16"
+              height="16"
+              loading="lazy"
+            />Discord</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</figure>

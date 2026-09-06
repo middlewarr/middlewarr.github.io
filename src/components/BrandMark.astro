@@ -1,0 +1,28 @@
+---
+interface Props {
+  class?: string;
+}
+
+const className = Astro.props.class;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 246 246"
+  aria-hidden="true"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="20"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="61.44" cy="61.44" r="18.424"></circle>
+  <circle cx="61.44" cy="184.32" r="18.424"></circle>
+  <circle cx="184.32" cy="61.44" r="18.424"></circle>
+  <circle cx="184.32" cy="184.32" r="18.424"></circle>
+  <path d="M78.24,167.52l91.68,-91.68"></path>
+  <path d="M142.08,142.08l27.84,27.84" stroke-linecap="square"></path>
+  <path d="M78.24,78.24l25.44,25.44" stroke-linecap="square"></path>
+  <path d="M61.44,79.864l0,78.956"></path>
+  <path d="M184.32,80.64l0,84.48"></path>
+</svg>
