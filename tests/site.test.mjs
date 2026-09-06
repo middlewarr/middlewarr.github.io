@@ -34,7 +34,7 @@ test("the landing page has only the Why, How, and Get started sections", async (
   assert.match(html, /id="why-middlewarr"/);
   assert.match(html, /id="how-it-works"/);
   assert.match(html, /id="get-started"/);
-  assert.match(html, />How</);
+  assert.match(html, /<h2 id="how-heading">From app to service<\/h2>/);
   assert.match(html, />Get Started</);
   assert.doesNotMatch(html, /Operational overview|Example interface|Quick start/);
 });
@@ -57,7 +57,7 @@ test("the How diagram describes implemented proxy behavior", async () => {
   assert.match(html, />Forward &amp; Log</);
   assert.match(html, /GET \/api\/v3\/calendar/);
   assert.match(html, /Request allowed/);
-  assert.match(html, /The response returns through Middlewarr to the client/);
+  assert.match(html, /The response returns through Middlewarr to the app\./);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net/);
 });
 
