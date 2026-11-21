@@ -22,7 +22,6 @@ test("the built page exposes the complete public landing-page contract", async (
   assert.match(html, /href="https:\/\/github\.com\/middlewarr\/middlewarr"/);
   assert.match(html, /href="https:\/\/docs\.middlewarr\.dev\/"/);
   assert.match(html, /aria-label="Requests travel from a client app through Middlewarr to an upstream service, and responses return through Middlewarr to the client app"/);
-  assert.doesNotMatch(html, /Open source/);
   assert.doesNotMatch(html, /<script(?:\s|>)/);
   assert.match(html, /href="\/fonts\/space-grotesk-latin-wght-normal\.woff2"/);
 });
@@ -57,6 +56,12 @@ test("the How diagram describes implemented proxy behavior", async () => {
   assert.match(html, />Forward &amp; Log</);
   assert.match(html, /GET \/api\/v3\/calendar/);
   assert.match(html, /Request allowed/);
+  // The policy card names the request it is evaluating; /api/v3/health is outside the
+  // official Homepage template, so it is the one that gets the 403.
+  assert.match(html, /current-allowed[^>]*><strong>Homepage<\/strong> <b>GET<\/b> \/api\/v3\/calendar/);
+  assert.match(html, /current-rejected[^>]*><strong>Homepage<\/strong> <b>GET<\/b> \/api\/v3\/health/);
+  assert.match(html, /Radarr, Sonarr, Lidarr, and Prowlarr/);
+  assert.doesNotMatch(html, /and the rest/);
   assert.match(html, /The response returns through Middlewarr to the app\./);
   assert.doesNotMatch(html, /cdn\.jsdelivr\.net/);
 });
@@ -103,7 +108,9 @@ test("the destination stage explains implemented failure notifications", async (
   assert.equal((html.match(/data-upstream-service=/g) ?? []).length, 2);
   assert.match(html, /class="journey-target-stack"[\s\S]*data-upstream-service="Radarr"[\s\S]*data-upstream-service="Sonarr"[\s\S]*data-notification-panel/);
   assert.match(html, />Notification Providers</);
-  assert.match(html, /Send alerts when access or upstream health needs attention/);
+  // Alerts fire on blocked requests and on unreachable services seen through proxied traffic
+  // (docs: guides/notifications); they are not a scheduled health monitor.
+  assert.match(html, /Alerts when requests are blocked or a service becomes unreachable/);
   for (const provider of ["Telegram", "Gotify", "Discord"]) {
     assert.match(html, new RegExp(`>${provider}<`));
   }
@@ -157,6 +164,8 @@ test("the setup instructions match the documented Docker and administrator setup
   assert.match(html, /docker build -t middlewarr \./);
   assert.match(html, /127\.0\.0\.1:9292:80/);
   assert.match(html, /Create your administrator account on first run/);
+  // Published ports make the browser look remote, so first-run setup asks for the bootstrap token.
+  assert.match(html, /docker logs middlewarr 2>&1 \| grep "one-time token"/);
   assert.doesNotMatch(html, /docker compose|does not authenticate/);
   assert.match(html, /<pre tabindex="0" aria-label="Docker installation commands">/);
 });

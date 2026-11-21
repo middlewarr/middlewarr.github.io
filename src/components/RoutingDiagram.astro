@@ -116,6 +116,13 @@ const services = [
         <strong>Middlewarr</strong><small>Request policy</small>
       </div>
     </header>
+    <div class="journey-current">
+      <span class="journey-label">Checking</span>
+      <span class="current-requests">
+        <code class="current-request current-allowed" translate="no"><strong>Homepage</strong> <b>GET</b> /api/v3/calendar</code>
+        <code class="current-request current-rejected" translate="no"><strong>Homepage</strong> <b>GET</b> /api/v3/health</code>
+      </span>
+    </div>
     <ol>
       {
         steps.map(({ title, detail, icon: Icon }, index) => (
@@ -196,7 +203,7 @@ const services = [
         <header>
           <span
             ><strong>Notification Providers</strong><small
-              >Send alerts when access or upstream health needs attention.</small
+              >Alerts when requests are blocked or a service becomes unreachable.</small
             ></span
           >
         </header>

@@ -5,9 +5,9 @@ import RoutingDiagram from "../components/RoutingDiagram.astro";
 import Footer from "../components/Footer.astro";
 import { ArrowUpRight, Check } from "@lucide/astro";
 
-const title = "Middlewarr — a self-hosted proxy for your *arr applications";
+const title = "Middlewarr — a self-hosted proxy for your *arr stack";
 const description =
-  "A lightweight, self-hosted proxy for Radarr, Sonarr, and the rest. Apps get one stable route and their own key while you control which service and endpoints each request reaches.";
+  "A lightweight, self-hosted proxy for Radarr, Sonarr, Lidarr, and Prowlarr. Apps get one stable route and their own key while you control which service and endpoints each request reaches.";
 ---
 
 <BaseLayout {title} {description}>
@@ -21,11 +21,11 @@ const description =
       <div class="container why-grid">
         <div class="why-copy">
           <h1 id="why-heading">
-            Your *arr apps.<br />
+            Your *arr stack.<br />
             <em>Access on your terms.</em>
           </h1>
           <p class="hero-descriptor">
-            A lightweight, self-hosted proxy for Radarr, Sonarr, and the rest.
+            A lightweight, self-hosted proxy for Radarr, Sonarr, Lidarr, and Prowlarr.
           </p>
           <p class="hero-lede">
             Connect dashboards, request managers, and scripts without sharing
@@ -45,7 +45,7 @@ const description =
         <div class="benefit-list">
           <h2 class="visually-hidden">What Middlewarr Gives You</h2>
           <article>
-            <span>01</span><div>
+            <div>
               <h3>Stable Routes</h3><p>
                 Point apps at <code>/proxy/{"{app}"}</code> so you can move a service
                 without reconfiguring every app.
@@ -53,7 +53,7 @@ const description =
             </div>
           </article>
           <article>
-            <span>02</span><div>
+            <div>
               <h3>Separate Credentials</h3><p>
                 Apps use their own proxy keys. Middlewarr adds the service’s API
                 key before forwarding each request.
@@ -61,18 +61,20 @@ const description =
             </div>
           </article>
           <article>
-            <span>03</span><div>
+            <div>
               <h3>Controlled Access</h3><p>
-                Choose the HTTP methods and paths each app can use. Requests
-                outside those rules are blocked and logged.
+                Start from a community template for Homepage, Seerr, Bazarr, and
+                more, then adjust the methods and paths each app can use. Anything
+                else is blocked and logged.
               </p>
             </div>
           </article>
           <article>
-            <span>04</span><div>
-              <h3>Health & Request Logs</h3><p>
-                Check service health and follow request logs in the admin
-                interface.
+            <div>
+              <h3>Logs & Alerts</h3><p>
+                Follow request logs, review blocked requests, and grant a missing
+                endpoint from the warning. Get alerts on Telegram, Discord, Gotify,
+                and more.
               </p>
             </div>
           </article>
@@ -116,28 +118,6 @@ const description =
             app proxy keys are separate. Use HTTPS through a reverse proxy when
             accessing Middlewarr over a network.
           </p>
-        </div>
-        <div class="start-actions">
-          <figure class="code-block">
-            <figcaption>Build and Start Middlewarr</figcaption>
-            <pre
-              tabindex="0"
-              aria-label="Docker installation commands"><code translate="no">git clone https://github.com/middlewarr/middlewarr
-cd middlewarr
-mkdir -p data
-cp settings.sample.yml data/settings.yml
-docker build -t middlewarr .
-docker run -d --name middlewarr \
-  -p 127.0.0.1:9292:80 \
-  -v "$PWD/data:/data" \
-  --restart unless-stopped middlewarr</code></pre>
-          </figure>
-          <p class="setup-next">
-            Open <a class="text-link" href="http://localhost:9292"
-              >localhost:9292</a
-            > on the machine running Docker to create your account. The setup guide
-            covers remote access and reverse proxies.
-          </p>
           <ul>
             <li>
               <Check aria-hidden="true" data-lucide="check" />One self-hosted
@@ -159,6 +139,30 @@ docker run -d --name middlewarr \
               data-lucide="arrow-up-right"
             /></a
           >
+        </div>
+        <div class="start-actions">
+          <figure class="code-block">
+            <figcaption>Build and Start Middlewarr</figcaption>
+            <pre
+              tabindex="0"
+              aria-label="Docker installation commands"><code translate="no">git clone https://github.com/middlewarr/middlewarr
+cd middlewarr
+mkdir -p data
+cp settings.sample.yml data/settings.yml
+docker build -t middlewarr .
+docker run -d --name middlewarr \
+  -p 127.0.0.1:9292:80 \
+  -v "$PWD/data:/data" \
+  --restart unless-stopped middlewarr
+docker logs middlewarr 2>&1 | grep "one-time token"</code></pre>
+          </figure>
+          <p class="setup-next">
+            Open <a class="text-link" href="http://localhost:9292"
+              >localhost:9292</a
+            > on the machine running Docker to create your account. If setup
+            asks for a bootstrap token, paste the one-time token from the logs.
+            The setup guide covers remote access and reverse proxies.
+          </p>
         </div>
       </div>
     </section>
