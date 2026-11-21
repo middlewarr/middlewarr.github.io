@@ -218,7 +218,10 @@ test("connections remain visible while policy results reset with a shared fade",
 
 test("policy steps immediately highlight a neutral background without sliding", async () => {
   const css = await readFile(new URL("../src/styles/global.css", import.meta.url), "utf8");
-  assert.match(css, /--step-highlight: hsl\(0 0% 98\.5%\)/);
+  // 98.5% grey on the white card measured ~1.03:1 and did not read as an active step;
+  // the highlight now uses the muted surface tone plus an accent rail.
+  assert.match(css, /--step-highlight: hsl\(275 18% 96%\)/);
+  assert.match(css, /\.journey-step::before \{[^}]*box-shadow: inset 2px 0 0 var\(--accent\);/);
   assert.match(css, /@keyframes policy-third \{ 0%, 32%, 100% \{ opacity: 0;/);
   assert.match(css, /@keyframes policy-fourth \{ 0%, 40%, 100% \{ opacity: 0;/);
   assert.match(css, /\.journey-step::before \{[^}]*background: var\(--step-highlight\);[^}]*animation: policy-first/);
